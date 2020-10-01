@@ -1,10 +1,14 @@
-import { Avatar, AvatarBackgroundColor, AvatarFitType, AvatarShape, AvatarSize, ListItemTypes, ShellBar, ShellBarItem, StandardListItem, ValueState } from '@ui5/webcomponents-react'
+import { Avatar, AvatarBackgroundColor, AvatarFitType, AvatarShape, AvatarSize, Input, InputType, ListItemTypes, PlacementType, Popover, PopoverHorizontalAlign, PopoverVerticalAlign, ShellBar, ShellBarItem, StandardListItem, ValueState } from '@ui5/webcomponents-react'
 import React, { useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import AppProductSwitch from '.././ProductSwitch'
 
 const AppBar = () => {
     const navigate = useNavigate()
     const shellbarRef = useRef(null)
+    const onPopocerClick=(e:CustomEvent) => {
+      PwPopover()
+    }
     return (
         <ShellBar ref={shellbarRef}
             menuItems={MenuItems()}
@@ -17,6 +21,21 @@ const AppBar = () => {
             notificationCount="10"
             showNotifications
             showProductSwitch
+            onProductSwitchClick={(e) => {
+                // @ts-ignore
+                document.getElementById('product-switch-popover').openBy(e.getParameter('targetRef'));
+              }}
+              searchField={
+                <Input
+                  disabled={false}
+                  placeholder={'Pesquisar'}
+                  readonly={false}
+                  type={undefined}
+                  value={'Pesquisar'}
+                  valueState={undefined}
+                  showSuggestions={true}
+                  icon={null}
+                />}
         >
             <ShellBarItem icon="add" text="Add" />
             <ShellBarItem  text="Detail" onItemClick={() => {navigate('/detail')}}/>
@@ -31,7 +50,6 @@ const AvatarApp = () => {
         shape={AvatarShape.Circle} size={AvatarSize.S} />
 }
 const MenuItems = () => {
-    const navigate = useNavigate()
 
     return (
         <>
@@ -51,4 +69,30 @@ const MenuItems = () => {
             </StandardListItem>
         </>
     )
+}
+const PwPopover=() => {
+  return(
+    <Popover
+    ref={{
+      current: '[Circular]'
+    }}
+    allowTargetOverlap
+    footer={null}
+    header={null}
+    headerText="Popover Header Text"
+    horizontalAlign={PopoverHorizontalAlign.Center}
+    initialFocus={undefined}
+    modal={false}
+    noArrow={false}
+    onAfterClose={function noRefCheck(){}}
+    onAfterOpen={function noRefCheck(){}}
+    onBeforeClose={function noRefCheck(){}}
+    onBeforeOpen={function noRefCheck(){}}
+    placementType={PlacementType.Bottom}
+    preventFocusRestore={false}
+    verticalAlign={PopoverVerticalAlign.Center}
+  >
+    <AppProductSwitch/>
+  </Popover>
+  )
 }
